@@ -11,8 +11,8 @@ public Employee build(ResultSet rs) throws SQLException {
 
 Employee employee = new Employee();
 employee.setId(rs.getInt("id"));
-employee.setName(rs.getString("imie"));
-employee.setSurname(rs.getString("nazwisko"));
+employee.setName(rs.getString("name"));
+employee.setSurname(rs.getString("surname"));
 return employee;
 
 }

@@ -9,9 +9,25 @@ public class Salary extends Entity{
 		positions = new ArrayList<Position>();
 	}
 	
-	private int amount;
+	private String amount;
 	
 	private List<Position> positions;
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
+	public List<Position> getPositions() {
+		return positions;
+	}
+
+	public void setPositions(List<Position> positions) {
+		this.positions = positions;
+	}
 
 	
 
