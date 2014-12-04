@@ -39,17 +39,17 @@ public class CompanyAddressRepository extends Repository<CompanyAddress> // impl
 
 	@Override
 	protected String getTableName() {
-		return "companyaddresses";
+		return "addresses";
 	}
 
 	@Override
 	protected String getInsertQuery() {
-		return "INSERT INTO companyaddresses(country,city,postalcode,street,housenumber) values(?,?,?,?,?)";
+		return "INSERT INTO addresses(country,city,postalcode,street,housenumber) values(?,?,?,?,?)";
 	}
 
 	@Override
 	protected String getUpdateQuery() {
-		return "update companyaddresses set (country,city,postalcode,street,housenumber)=(?,?,?,?,?) where id=?";
+		return "update addresses set (country,city,postalcode,street,housenumber)=(?,?,?,?,?) where id=?";
 	}
 	
 }
