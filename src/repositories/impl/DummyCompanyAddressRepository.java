@@ -1,10 +1,11 @@
 package repositories.impl;
 
-import java.util.List;
-import repositories.IRepository;
-import domain.CompanyAddress;
+import java.util.*;
 
-public class DummyCompanyAddressRepository implements IRepository<CompanyAddress> {
+import repositories.ICompanyAddressRepository;
+import domain.*;
+
+public class DummyCompanyAddressRepository implements ICompanyAddressRepository{
 	
 	public DummyCompanyAddressRepository(DummyDb db){
 		this.db=db;
@@ -41,6 +42,27 @@ public class DummyCompanyAddressRepository implements IRepository<CompanyAddress
 	@Override
 	public List<CompanyAddress> getAll() {
 		return db.addresses;
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(Company company) {
+		return withCompany(company.getId());
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(String companyName) {
+		for(Company c: db.companies)
+			if(c.getName()==companyName)
+				return c.getAddresses();
+		return new ArrayList<CompanyAddress>();
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(int addressId) {
+		for(Company c: db.companies)
+			if(c.getId()==addressId)
+				return c.getAddresses();
+		return new ArrayList<CompanyAddress>();
 	}
 
 }

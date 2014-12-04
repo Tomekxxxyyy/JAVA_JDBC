@@ -1,10 +1,12 @@
 package repositories.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import repositories.IRepository;
-import domain.Employee;
 
-public class DummyEmployeeRepository implements IRepository<Employee> {
+import repositories.*;
+import domain.*;
+
+public class DummyEmployeeRepository implements IEmployeeRepository{
 
 	public DummyEmployeeRepository(DummyDb db){
 		this.db=db;
@@ -42,6 +44,28 @@ public class DummyEmployeeRepository implements IRepository<Employee> {
 	@Override
 	public List<Employee> getAll() {
 		return db.employees;
+	}
+
+	@Override
+	public List<Employee> withPosition(Position position) {
+		return withPosition(position.getId());
+	}
+
+	@Override
+	public List<Employee> withPosition(String positionName) {
+		for(Position p: db.positions)
+			if(p.getName()==positionName)
+				return p.getEmployees();
+		return new ArrayList<Employee>();
+			
+	}
+
+	@Override
+	public List<Employee> withPosition(int PositionId) {
+		for(Position p: db.positions)
+			if(p.getId()==PositionId)
+				return p.getEmployees();
+		return new ArrayList<Employee>();
 	}
 
 }

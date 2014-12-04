@@ -1,10 +1,12 @@
 package repositories.impl;
 
 import java.util.List;
-import repositories.IRepository;
-import domain.Company;
 
-public class DummyCompanyRepository implements IRepository<Company> {
+import repositories.ICompanyRepository;
+import domain.Company;
+import domain.CompanyAddress;
+
+public class DummyCompanyRepository implements ICompanyRepository {
 	
 		
 	public DummyCompanyRepository(DummyDb db){
@@ -43,6 +45,27 @@ public class DummyCompanyRepository implements IRepository<Company> {
 	@Override
 	public List<Company> getAll() {
 		return db.companies;
+	}
+
+	@Override
+	public Company withAddress(CompanyAddress address) {
+		return withAddress(address.getId());
+	}
+
+	@Override
+	public Company withAddress(String addressStreet) {
+		for(CompanyAddress ca: db.addresses)
+			if(ca.getStreet()==addressStreet)
+				return ca.getCompany();
+		return new Company();
+	}
+
+	@Override
+	public Company withAddress(int companyId) {
+		for(CompanyAddress ca : db.addresses )
+			if(ca.getId()==companyId)
+				return ca.getCompany();
+		return new Company();
 	}
 
 }

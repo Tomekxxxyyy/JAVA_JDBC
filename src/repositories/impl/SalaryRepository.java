@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.Position;
 import domain.Salary;
 import repositories.IRepository;
-//import repositories.ISalaryRepository;
+import repositories.ISalaryRepository;
 
-public class SalaryRepository extends Repository<Salary> // implements ISalaryRepository
+public class SalaryRepository extends Repository<Salary> implements ISalaryRepository
 {
 
 	public SalaryRepository(Connection connection, IEntityBuilder<Salary> builder) {
@@ -43,6 +44,24 @@ public class SalaryRepository extends Repository<Salary> // implements ISalaryRe
 	@Override
 	protected String getUpdateQuery() {
 		return "update salaries set (amount)=(?) where id=?";
+	}
+
+	@Override
+	public List<Salary> withPosition(Position position) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Salary> withPosition(String positionName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Salary> withPosition(int positionId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

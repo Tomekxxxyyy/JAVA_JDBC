@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.Company;
 import domain.CompanyAddress;
 import repositories.IRepository;
-//import repositories.ICompanyAddressRepository;
+import repositories.ICompanyAddressRepository;
 
-public class CompanyAddressRepository extends Repository<CompanyAddress> // implements ICompanyAddressRepository
+public class CompanyAddressRepository extends Repository<CompanyAddress> implements ICompanyAddressRepository
 {
 
 	public CompanyAddressRepository(Connection connection, IEntityBuilder<CompanyAddress> builder) {
@@ -50,6 +51,24 @@ public class CompanyAddressRepository extends Repository<CompanyAddress> // impl
 	@Override
 	protected String getUpdateQuery() {
 		return "update addresses set (country,city,postalcode,street,housenumber)=(?,?,?,?,?) where id=?";
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(Company company) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(String companyName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<CompanyAddress> withCompany(int addressId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

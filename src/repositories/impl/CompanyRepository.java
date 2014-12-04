@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.Company;
+import domain.CompanyAddress;
 import repositories.IRepository;
-//import repositories.ICompanyRepository;
+import repositories.ICompanyRepository;
 
-public class CompanyRepository extends Repository<Company> // implements ICompanyRepository
+public class CompanyRepository extends Repository<Company> implements ICompanyRepository
 {
 
 	public CompanyRepository(Connection connection, IEntityBuilder<Company> builder) {
@@ -47,6 +48,24 @@ public class CompanyRepository extends Repository<Company> // implements ICompan
 	@Override
 	protected String getUpdateQuery() {
 		return "update companies set (name,legalstructure,companyid)=(?,?,?) where id=?";
+	}
+
+	@Override
+	public Company withAddress(CompanyAddress address) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Company withAddress(String addressStreet) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Company withAddress(int companyId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -7,11 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.Employee;
 import domain.Position;
 import repositories.IRepository;
-//import repositories.IPositionRepository;
+import repositories.IPositionRepository;
 
-public class PositionRepository extends Repository<Position> // implements IPositionRepository
+public class PositionRepository extends Repository<Position> implements IPositionRepository
 {
 
 	public PositionRepository(Connection connection, IEntityBuilder<Position> builder) {
@@ -43,6 +44,24 @@ public class PositionRepository extends Repository<Position> // implements IPosi
 	@Override
 	protected String getUpdateQuery() {
 		return "update positions set (name)=(?) where id=?";
+	}
+
+	@Override
+	public List<Position> withEmployee(Employee employee) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Position> withEmployee(String employeeSurname) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Position> withEmployee(int employeeId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
