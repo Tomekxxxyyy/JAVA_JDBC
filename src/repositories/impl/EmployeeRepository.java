@@ -1,22 +1,18 @@
 package repositories.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.List;
 
 import domain.Employee;
 import domain.Position;
-import repositories.IRepository;
 import repositories.IEmployeeRepository;
+import unitofwork.IUnitOfWork;
 
 public class EmployeeRepository extends Repository<Employee> implements IEmployeeRepository
 {
 
-	public EmployeeRepository(Connection connection, IEntityBuilder<Employee> builder) {
-		super(connection, builder);
+	public EmployeeRepository(Connection connection, IEntityBuilder<Employee> builder, IUnitOfWork uow) {
+		super(connection, builder, uow);
 	}
 
 	@Override

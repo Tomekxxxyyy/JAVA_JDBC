@@ -33,9 +33,9 @@ public class DummyCompanyAddressRepository implements ICompanyAddressRepository{
 
 	@Override
 	public CompanyAddress get(int id) {
-		for(CompanyAddress address : db.addresses)
-			if(address.getId()==id)
-				return address;
+		for(CompanyAddress a : db.addresses)
+			if(a.getId()==id)
+				return a;
 		return null;
 	}
 
@@ -52,7 +52,7 @@ public class DummyCompanyAddressRepository implements ICompanyAddressRepository{
 	@Override
 	public List<CompanyAddress> withCompany(String companyName) {
 		for(Company c: db.companies)
-			if(c.getName()==companyName)
+			if(c.getName().equals(companyName))
 				return c.getAddresses();
 		return new ArrayList<CompanyAddress>();
 	}

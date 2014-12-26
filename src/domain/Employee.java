@@ -31,6 +31,8 @@ public class Employee extends Entity{
 	}
 	public void setCompany(Company company) {
 		this.company = company;
+		if(!this.equals(company.getEmployee()))
+			company.setEmployee(this);
 	}
 	public List<Position> getPositions() {
 		return positions;

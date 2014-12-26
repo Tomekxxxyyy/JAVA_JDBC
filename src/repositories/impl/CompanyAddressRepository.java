@@ -1,22 +1,20 @@
 package repositories.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.*;
 import java.util.List;
 
+import repositories.ICompanyAddressRepository;
+import unitofwork.IUnitOfWork;
 import domain.Company;
 import domain.CompanyAddress;
-import repositories.IRepository;
-import repositories.ICompanyAddressRepository;
 
-public class CompanyAddressRepository extends Repository<CompanyAddress> implements ICompanyAddressRepository
+
+public class CompanyAddressRepository 
+extends Repository<CompanyAddress> implements ICompanyAddressRepository
 {
 
-	public CompanyAddressRepository(Connection connection, IEntityBuilder<CompanyAddress> builder) {
-		super(connection, builder);
+	public CompanyAddressRepository(Connection connection, IEntityBuilder<CompanyAddress> builder, IUnitOfWork uow) {
+		super(connection, builder, uow);
 	}
 
 	@Override

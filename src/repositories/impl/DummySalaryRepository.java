@@ -34,9 +34,9 @@ public class DummySalaryRepository implements ISalaryRepository {
 
 	@Override
 	public Salary get(int id) {
-		for(Salary salary : db.salaries)
-			if(salary.getId()==id)
-				return salary;
+		for(Salary s : db.salaries)
+			if(s.getId()==id)
+				return s;
 		return null;
 		
 	}
@@ -54,7 +54,7 @@ public class DummySalaryRepository implements ISalaryRepository {
 	@Override
 	public List<Salary> withPosition(String positionName) {
 		for(Position p: db.positions)
-			if(p.getName()==positionName)
+			if(p.getName().equals(positionName))
 				return p.getSalaries();
 		return new ArrayList<Salary>();
 	}

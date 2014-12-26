@@ -34,9 +34,9 @@ public class DummyPositionRepository implements IPositionRepository {
 
 	@Override
 	public Position get(int id) {
-		for(Position position : db.positions)
-			if(position.getId()==id)
-				return position;
+		for(Position p : db.positions)
+			if(p.getId()==id)
+				return p;
 		return null;
 		
 	}
@@ -54,7 +54,7 @@ public class DummyPositionRepository implements IPositionRepository {
 	@Override
 	public List<Position> withEmployee(String employeeSurname) {
 		for(Employee e: db.employees)
-			if(e.getSurname()==employeeSurname)
+			if(e.getSurname().equals(employeeSurname))
 				return e.getPositions();
 		return new ArrayList<Position>();
 	}

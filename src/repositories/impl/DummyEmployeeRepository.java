@@ -34,9 +34,9 @@ public class DummyEmployeeRepository implements IEmployeeRepository{
 
 	@Override
 	public Employee get(int id) {
-		for(Employee employee : db.employees)
-			if(employee.getId()==id)
-				return employee;
+		for(Employee e : db.employees)
+			if(e.getId()==id)
+				return e;
 		return null;
 		
 	}
@@ -54,7 +54,7 @@ public class DummyEmployeeRepository implements IEmployeeRepository{
 	@Override
 	public List<Employee> withPosition(String positionName) {
 		for(Position p: db.positions)
-			if(p.getName()==positionName)
+			if(p.getName().equals(positionName))
 				return p.getEmployees();
 		return new ArrayList<Employee>();
 			

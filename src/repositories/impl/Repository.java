@@ -8,22 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import repositories.IRepository;
+import unitofwork.IUnitOfWork;
+import unitofwork.IUnitOfWorkRepository;
 import domain.Entity;
 
-
 public abstract class Repository<TEntity extends Entity> 
-	implements IRepository<TEntity>
+	implements IRepository<TEntity>, IUnitOfWorkRepository
 {
-
+	
+	protected IUnitOfWork uow;
 	protected Connection connection;
+	protected PreparedStatement selectByID;
 	protected PreparedStatement insert;
-	protected PreparedStatement selectById;
+	protected PreparedStatement delete;
 	protected PreparedStatement update;
 	protected PreparedStatement selectAll;
-	protected PreparedStatement delete;
 	protected IEntityBuilder<TEntity> builder;
-	
-	protected String selectByIdSql=
+
+	protected String selectByIDSql=
 			"SELECT * FROM "
 			+ getTableName()
 			+ " WHERE id=?";
@@ -32,27 +34,73 @@ public abstract class Repository<TEntity extends Entity>
 			+ getTableName()
 			+ " WHERE id=?";
 	protected String selectAllSql=
-			"SELECT * FROM "+ getTableName();
+			"SELECT * FROM " + getTableName();
 	
-	protected Repository(Connection connection,IEntityBuilder<TEntity> builder)
+	protected Repository(Connection connection,
+			IEntityBuilder<TEntity> builder, IUnitOfWork uow)
 	{
+		this.uow=uow;
 		this.builder=builder;
 		this.connection = connection;
-		try 
-		{
+		try {
+			selectByID=connection.prepareStatement(selectByIDSql);
 			insert = connection.prepareStatement(getInsertQuery());
-			selectById=connection.prepareStatement(selectByIdSql);
-			update=connection.prepareStatement(getUpdateQuery());
-			delete=connection.prepareStatement(deleteSql);
-			selectAll=connection.prepareStatement(selectAllSql);
-			
-		} catch (Exception e) {
+			delete = connection.prepareStatement(deleteSql);
+			update = connection.prepareStatement(getUpdateQuery());
+			selectAll = connection.prepareStatement(selectAllSql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void delete(TEntity entity) {
+	public void save(TEntity entity)
+	{
+		uow.markAsNew(entity, this);
+	}
+
+	@Override
+	public void update(TEntity entity)
+	{
+		uow.markAsDirty(entity, this);
+	}
+
+	@Override
+	public void delete(TEntity entity)
+	{
+		uow.markAsDeleted(entity, this);
+	}
+
+	@Override
+	public void persistAdd(Entity entity) {
+
+		try {
+			setUpInsertQuery((TEntity)entity);
+			insert.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	@Override
+	public void persistUpdate(Entity entity) {
+
+		try {
+			setUpUpdateQuery((TEntity)entity);
+			update.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void persistDelete(Entity entity) {
+
 		try {
 			delete.setInt(1, entity.getId());
 			delete.executeUpdate();
@@ -60,69 +108,49 @@ public abstract class Repository<TEntity extends Entity>
 			e.printStackTrace();
 		}
 		
-	}	
-
-	@Override
-	public void save(TEntity entity) {
-		try {
-			setUpInsertQuery(entity);
-			insert.executeUpdate();
-			
-		} catch (SQLException e) {
-	
-			e.printStackTrace();
-		}
 	}
-	
 
-	@Override
-	public void update(TEntity entity) {
-		try {
-			setUpUpdateQuery(entity);
-			update.executeUpdate();
-		} catch (SQLException e) {
-	
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
 	public TEntity get(int id) {
 
 		try {
-			selectById.setInt(1, id);
-			ResultSet rs = selectById.executeQuery();
+			selectByID.setInt(1, id);
+			ResultSet rs = selectByID.executeQuery();
 			while(rs.next())
 			{
 				return builder.build(rs);
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
-	
+
+
+
 	@Override
 	public List<TEntity> getAll() {
+
 		List<TEntity> result = new ArrayList<TEntity>();
+		
 		try {
-			ResultSet rs = selectAll.executeQuery();
+			ResultSet rs= selectAll.executeQuery();
 			while(rs.next())
 			{
 				result.add(builder.build(rs));
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return result;
 	}
-	
+
 	
 	protected abstract void setUpUpdateQuery(TEntity entity) throws SQLException;
 	protected abstract void setUpInsertQuery(TEntity entity) throws SQLException;
 	protected abstract String getTableName();
-	protected abstract String getInsertQuery();
 	protected abstract String getUpdateQuery();
+	protected abstract String getInsertQuery();
 }
